@@ -6,18 +6,15 @@
 int main(int argc, char **argv) {
     while (1) {
 
-        char *line;
-        size_t len;
+        size_t len = 128;
+        char *line = malloc(len);
         printf("? ");
-        if (-1 == getline(&line, &len, stdin))
+        int chars = getline(&line, &len, stdin);
+        if (-1 == chars)
             return 0;
         else if (!strcmp(line, "\n"))
             continue;
-        else {
-            char *l = line;
-            while (*l != '\n') l++;
-            *l = '\0';
-        }
+        line[chars-1] = '\0';
         
         char *a[len]; 
         int n = 0;
