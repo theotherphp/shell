@@ -9,11 +9,9 @@ int main(int argc, char **argv) {
         size_t len = 128;
         char *line = malloc(len);
         printf("? ");
-        int chars = getline(&line, &len, stdin);
-        if (-1 == chars)
+        int chars;
+        if (-1 == (chars = getline(&line, &len, stdin)))
             return 0;
-        else if (!strcmp(line, "\n"))
-            continue;
         line[chars-1] = '\0';
         
         char *a[len]; 
@@ -23,11 +21,9 @@ int main(int argc, char **argv) {
             t = strtok(NULL, " ");
             a[n++] = t ? t : NULL; 
         }
-
-        if (0 == fork()) 
-            execvp(a[0], a);
-        else
-            wait(NULL);
+        
+        fork() == 0 ? execvp(a[0], a) : wait(NULL);
+        free(line);
     }
 
     return 0;
